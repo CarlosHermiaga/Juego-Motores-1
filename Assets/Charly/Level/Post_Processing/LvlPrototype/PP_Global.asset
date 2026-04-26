@@ -145,7 +145,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.45
+    m_Value: 0.2
   smoothness:
     m_OverrideState: 1
     m_Value: 0.2
@@ -168,10 +168,10 @@ MonoBehaviour:
   - {fileID: -2430718539347419213}
   - {fileID: 4738414128865399008}
   - {fileID: -2381571487211695291}
+  - {fileID: 3819525256840093350}
   - {fileID: -2613948228081415092}
   - {fileID: -3308585900913994837}
   - {fileID: 5725570880988394837}
-  - {fileID: 3819525256840093350}
 --- !u!114 &3819525256840093350
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -184,10 +184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ChromaticAberration
-  active: 0
+  active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
 --- !u!114 &4738414128865399008
 MonoBehaviour:
   m_ObjectHideFlags: 3
