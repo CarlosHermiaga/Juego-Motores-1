@@ -31,7 +31,7 @@ public class PlayerInteraction : MonoBehaviour
             if (interactable != null)
             {
                 currentInteractable = interactable;
-                interactionText.text = "Presioná E para interactuar con " + interactable.interactionName;
+                interactionText.text = "Presioná E para " + interactable.interactionName;
                 return;
             }
         }

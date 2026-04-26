@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PlayerFlashlightController : MonoBehaviour
 {
-    public GameObject flashlightObject;
-    public bool hasFlashlight = false;
-    public KeyCode toggleKey = KeyCode.F;
+    [SerializeField] GameObject flashlight, flashlightObject;
+    bool hasFlashlight = false;
+    [SerializeField] KeyCode toggleKey = KeyCode.F;
 
     private bool isOn = false;
 
@@ -12,6 +12,7 @@ public class PlayerFlashlightController : MonoBehaviour
     {
         if (flashlightObject != null)
         {
+            flashlight.SetActive(false);
             flashlightObject.SetActive(false);
         }
     }
@@ -27,10 +28,11 @@ public class PlayerFlashlightController : MonoBehaviour
     public void PickUpFlashlight()
     {
         hasFlashlight = true;
-        isOn = true;
+        //isOn = true;
 
         if (flashlightObject != null)
         {
+            flashlight.SetActive(true);
             flashlightObject.SetActive(true);
         }
 
