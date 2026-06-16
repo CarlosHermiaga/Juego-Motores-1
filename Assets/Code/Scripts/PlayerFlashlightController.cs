@@ -2,22 +2,28 @@ using UnityEngine;
 
 public class PlayerFlashlightController : MonoBehaviour
 {
-    [SerializeField] GameObject flashlight, flashlightObject;
-    bool hasFlashlight = false;
-    [SerializeField] KeyCode toggleKey = KeyCode.F;
+    [Header("Flashlight")]
+    public GameObject flashlightObject;
+    public bool hasFlashlight = false;
+    public KeyCode toggleKey = KeyCode.F;
+
+    [Header("Audio")]
+    public AudioSource flashlightAudioSource;
+    public AudioClip pickupClickSound;
+    public AudioClip toggleClickSound;
+    public float audioVolume = 1f;
 
     private bool isOn = false;
 
-    void Start()
+    private void Start()
     {
         if (flashlightObject != null)
         {
-            flashlight.SetActive(false);
             flashlightObject.SetActive(false);
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (hasFlashlight && Input.GetKeyDown(toggleKey))
         {
@@ -28,13 +34,14 @@ public class PlayerFlashlightController : MonoBehaviour
     public void PickUpFlashlight()
     {
         hasFlashlight = true;
-        //isOn = true;
+        isOn = true;
 
         if (flashlightObject != null)
         {
-            flashlight.SetActive(true);
             flashlightObject.SetActive(true);
         }
+
+        PlaySound(pickupClickSound);
 
         Debug.Log("Agarraste la linterna");
     }
@@ -47,5 +54,25 @@ public class PlayerFlashlightController : MonoBehaviour
         {
             flashlightObject.SetActive(isOn);
         }
+
+        if (toggleClickSound != null)
+        {
+            PlaySound(toggleClickSound);
+        }
+        else
+        {
+            PlaySound(pickupClickSound);
+        }
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (flashlightAudioSource == null || clip == null)
+        {
+            return;
+        }
+
+        flashlightAudioSource.pitch = 1f;
+        flashlightAudioSource.PlayOneShot(clip, audioVolume);
     }
 }
