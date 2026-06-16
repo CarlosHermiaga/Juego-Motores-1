@@ -14,6 +14,25 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-4082646188415209351
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: d974fca601a497249934e716985a7677
+  m_Children: []
+  m_Volume: d1f5e98c4d7863e4a919e325cdac4e61
+  m_Pitch: 727aaea86fb0dd148b6ea27bc827dc57
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -307666721212552327}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &-1230284215635330857
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -24,6 +43,20 @@ AudioMixerEffectController:
   m_EffectID: e6a8efd967266e9429a188b70bba9b47
   m_EffectName: Attenuation
   m_MixLevel: 0f05d66d6137f504fb1a16df83bc2526
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &-307666721212552327
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 3efce5c392047394d8343bca73513734
+  m_EffectName: Attenuation
+  m_MixLevel: fcc79ce7114dfbe42aa601d85c708a66
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
@@ -70,6 +103,7 @@ AudioMixerController:
     - 1604214a709fc764f8fdf38fdd82f1b5
     - adb820f8a237b2a4b9422278e0a8b542
     - 858842d2c9100f94c9c1ff632d85ada8
+    - d974fca601a497249934e716985a7677
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -87,6 +121,7 @@ AudioMixerGroupController:
   - {fileID: -214160100456740641}
   - {fileID: 6162998253157333580}
   - {fileID: 885121424288662695}
+  - {fileID: -4082646188415209351}
   m_Volume: f008c146b2f15774ca883cd5b0ecd396
   m_Pitch: c641fd61ca14dd947b0bb60cd8e1895a
   m_Send: 00000000000000000000000000000000
@@ -122,6 +157,7 @@ AudioMixerSnapshotController:
   m_FloatValues:
     c641fd61ca14dd947b0bb60cd8e1895a: 1
     f008c146b2f15774ca883cd5b0ecd396: -0.10231405
+    47bb55d82b41afa4c9d2ad3aecae2a15: 14.308233
   m_TransitionOverrides: {}
 --- !u!243 &885121424288662695
 AudioMixerGroupController:
