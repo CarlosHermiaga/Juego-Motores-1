@@ -9605,6 +9605,7 @@ GameObject:
   - component: {fileID: 772391469}
   - component: {fileID: 772391471}
   - component: {fileID: 772391470}
+  - component: {fileID: 772391472}
   m_Layer: 0
   m_Name: Casette_2
   m_TagString: Untagged
@@ -9684,6 +9685,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772391468}
   m_Mesh: {fileID: -387964781972411883, guid: e0dbaf513b8b1234182403c5f2dbea8b, type: 3}
+--- !u!114 &772391472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772391468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66fcd03322f95fd4aa9a827520458d0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CassettePickup
+  interactionName: Agarrar casette
+  cassetteIndex: 2
+  cassetteName: Cassette 03
+  pickupAudioSource: {fileID: 0}
+  pickupSound: {fileID: 0}
+  cassetteVisual: {fileID: 0}
+  interactionCollider: {fileID: 0}
 --- !u!4 &777085684 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9732d766340808b428277d7be140768b, type: 3}
@@ -15347,8 +15367,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Radio
   interactionName: Radio
-  isOn: 0
-  audioSource: {fileID: 0}
+  radioAudioSource: {fileID: 0}
+  staticClip: {fileID: 0}
+  allowStaticIfNoCassette: 1
+  cassetteNewsClips: []
   startOff: 1
 --- !u!65 &1252851612
 BoxCollider:
@@ -16304,7 +16326,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerObjectiveInventory
   collectedItems: 0
   requiredItems: 3
+  totalCassettes: 3
   objectiveText: {fileID: 1757547742}
+  objectiveLabel: Cassettes encontrados
 --- !u!1001 &1295335791
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17942,6 +17966,7 @@ GameObject:
   - component: {fileID: 1449483528}
   - component: {fileID: 1449483530}
   - component: {fileID: 1449483529}
+  - component: {fileID: 1449483531}
   m_Layer: 0
   m_Name: Casette_1
   m_TagString: Untagged
@@ -18021,6 +18046,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1449483527}
   m_Mesh: {fileID: -387964781972411883, guid: e0dbaf513b8b1234182403c5f2dbea8b, type: 3}
+--- !u!114 &1449483531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449483527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66fcd03322f95fd4aa9a827520458d0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CassettePickup
+  interactionName: Agarrar cassette
+  cassetteIndex: 1
+  cassetteName: Cassette 02
+  pickupAudioSource: {fileID: 0}
+  pickupSound: {fileID: 0}
+  cassetteVisual: {fileID: 0}
+  interactionCollider: {fileID: 0}
 --- !u!1 &1456363571
 GameObject:
   m_ObjectHideFlags: 0
@@ -23038,8 +23082,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Radio
   interactionName: Radio
-  isOn: 0
-  audioSource: {fileID: 0}
+  radioAudioSource: {fileID: 1841053411}
+  staticClip: {fileID: 8300000, guid: bdcb10b38ec4daa4aac27406010f6ddf, type: 3}
+  allowStaticIfNoCassette: 1
+  cassetteNewsClips:
+  - {fileID: 8300000, guid: c4facbe9385aaf2489533989e981c7ba, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
   startOff: 1
 --- !u!65 &1841053408
 BoxCollider:
@@ -23075,7 +23124,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: bdcb10b38ec4daa4aac27406010f6ddf, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.495
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -24664,6 +24713,8 @@ GameObject:
   - component: {fileID: 1973942879}
   - component: {fileID: 1973942881}
   - component: {fileID: 1973942880}
+  - component: {fileID: 1973942883}
+  - component: {fileID: 1973942882}
   m_Layer: 0
   m_Name: Casette_3
   m_TagString: Untagged
@@ -24680,7 +24731,7 @@ Transform:
   m_GameObject: {fileID: 1973942878}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.43310857, z: 0, w: 0.9013418}
-  m_LocalPosition: {x: 0.97684467, y: 0.30968016, z: -0.8211633}
+  m_LocalPosition: {x: 2.14, y: 0.30968016, z: -6.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -24743,6 +24794,46 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1973942878}
   m_Mesh: {fileID: -387964781972411883, guid: e0dbaf513b8b1234182403c5f2dbea8b, type: 3}
+--- !u!65 &1973942882
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973942878}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5502923, y: 0.14355831, z: 0.9669817}
+  m_Center: {x: 0.000003725414, y: 0, z: 0.0041503464}
+--- !u!114 &1973942883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973942878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66fcd03322f95fd4aa9a827520458d0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CassettePickup
+  interactionName: Agarrar cassete
+  cassetteIndex: 0
+  cassetteName: Cassette 01
+  pickupAudioSource: {fileID: 0}
+  pickupSound: {fileID: 0}
+  cassetteVisual: {fileID: 0}
+  interactionCollider: {fileID: 0}
 --- !u!1001 &1974332135
 PrefabInstance:
   m_ObjectHideFlags: 0
