@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Radio : InteractableObject
@@ -7,28 +8,66 @@ public class Radio : InteractableObject
 
     [Header("Static Radio")]
     public AudioClip staticClip;
-    public bool allowStaticIfNoCassette = true;
+    public bool startWithStatic = false;
+    public bool startStaticWhenEnabled = true;
+    public bool interactionDoesNothingWithoutCassette = true;
 
     [Header("Cassette Player")]
     public AudioClip[] cassetteNewsClips;
-
-    [Header("Settings")]
-    public bool startOff = true;
+    public bool returnToStaticAfterCassette = true;
+    public bool canStopCassetteWithInteraction = false;
 
     private bool isStaticOn = false;
     private bool isPlayingCassette = false;
+    private Coroutine cassetteCoroutine;
+    private Coroutine startStaticCoroutine;
+
+    private void Awake()
+    {
+        SetupRadio();
+    }
 
     private void Start()
+    {
+        SetupRadio();
+
+        if (startWithStatic)
+        {
+            StartStatic();
+        }
+    }
+
+    private void OnEnable()
+    {
+        SetupRadio();
+
+        if (startStaticWhenEnabled)
+        {
+            if (startStaticCoroutine != null)
+            {
+                StopCoroutine(startStaticCoroutine);
+            }
+
+            startStaticCoroutine = StartCoroutine(StartStaticAfterOneFrame());
+        }
+    }
+
+    private IEnumerator StartStaticAfterOneFrame()
+    {
+        yield return null;
+        StartStatic();
+    }
+
+    private void SetupRadio()
     {
         if (radioAudioSource == null)
         {
             radioAudioSource = GetComponent<AudioSource>();
         }
 
-        if (radioAudioSource != null && startOff)
+        if (radioAudioSource != null)
         {
             radioAudioSource.playOnAwake = false;
-            radioAudioSource.Stop();
         }
     }
 
@@ -36,9 +75,13 @@ public class Radio : InteractableObject
     {
         PlayerObjectiveInventory inventory = FindObjectOfType<PlayerObjectiveInventory>();
 
-        if (isPlayingCassette && radioAudioSource != null && radioAudioSource.isPlaying)
+        if (isPlayingCassette)
         {
-            StopRadio();
+            if (canStopCassetteWithInteraction)
+            {
+                StopRadio();
+            }
+
             return;
         }
 
@@ -48,17 +91,16 @@ public class Radio : InteractableObject
             return;
         }
 
-        if (allowStaticIfNoCassette)
+        if (interactionDoesNothingWithoutCassette)
         {
-            ToggleStatic();
+            Debug.Log("La radio solo emite estática.");
+            return;
         }
-        else
-        {
-            Debug.Log("No hay cassettes para reproducir.");
-        }
+
+        ToggleStatic();
     }
 
-    private void ToggleStatic()
+    private void StartStatic()
     {
         if (radioAudioSource == null)
         {
@@ -68,13 +110,7 @@ public class Radio : InteractableObject
 
         if (staticClip == null)
         {
-            Debug.LogWarning("No hay sonido de estática asignado.");
-            return;
-        }
-
-        if (isStaticOn)
-        {
-            StopRadio();
+            Debug.LogWarning("La radio no tiene Static Clip asignado.");
             return;
         }
 
@@ -86,7 +122,19 @@ public class Radio : InteractableObject
         radioAudioSource.loop = true;
         radioAudioSource.Play();
 
-        Debug.Log("La radio se prendió.");
+        Debug.Log("Radio prendida con estática.");
+    }
+
+    private void ToggleStatic()
+    {
+        if (isStaticOn)
+        {
+            StopRadio();
+        }
+        else
+        {
+            StartStatic();
+        }
     }
 
     private void PlayNextCassette(PlayerObjectiveInventory inventory)
@@ -95,12 +143,7 @@ public class Radio : InteractableObject
 
         if (nextCassetteIndex == -1)
         {
-            nextCassetteIndex = inventory.GetFirstCollectedCassetteIndex();
-        }
-
-        if (nextCassetteIndex == -1)
-        {
-            Debug.Log("No hay cassettes disponibles.");
+            Debug.Log("No hay cassettes nuevos para reproducir.");
             return;
         }
 
@@ -126,13 +169,41 @@ public class Radio : InteractableObject
         radioAudioSource.loop = false;
         radioAudioSource.Play();
 
-        inventory.MarkCassetteAsPlayed(nextCassetteIndex);
-
         Debug.Log("Reproduciendo cassette " + (nextCassetteIndex + 1));
+
+        if (cassetteCoroutine != null)
+        {
+            StopCoroutine(cassetteCoroutine);
+        }
+
+        cassetteCoroutine = StartCoroutine(WaitForCassetteToEnd(nextCassetteIndex, selectedClip.length, inventory));
+    }
+
+    private IEnumerator WaitForCassetteToEnd(int cassetteIndex, float cassetteLength, PlayerObjectiveInventory inventory)
+    {
+        yield return new WaitForSeconds(cassetteLength);
+
+        isPlayingCassette = false;
+
+        if (inventory != null)
+        {
+            inventory.MarkCassetteAsPlayed(cassetteIndex);
+        }
+
+        if (returnToStaticAfterCassette)
+        {
+            StartStatic();
+        }
     }
 
     private void StopRadio()
     {
+        if (cassetteCoroutine != null)
+        {
+            StopCoroutine(cassetteCoroutine);
+            cassetteCoroutine = null;
+        }
+
         if (radioAudioSource != null)
         {
             radioAudioSource.Stop();
