@@ -17,8 +17,15 @@ public class Radio : InteractableObject
     public bool returnToStaticAfterCassette = true;
     public bool canStopCassetteWithInteraction = false;
 
+    [Header("Loop 1 Door Unlock")]
+    public bool unlockDoorWhenCassetteStarts = true;
+    public int cassetteIndexThatUnlocksDoor = 0;
+    public DoorSystem loop1DoorToUnlock;
+
     private bool isStaticOn = false;
     private bool isPlayingCassette = false;
+    private bool hasUnlockedDoor = false;
+
     private Coroutine cassetteCoroutine;
     private Coroutine startStaticCoroutine;
 
@@ -169,6 +176,8 @@ public class Radio : InteractableObject
         radioAudioSource.loop = false;
         radioAudioSource.Play();
 
+        UnlockDoorIfNeeded(nextCassetteIndex);
+
         Debug.Log("Reproduciendo cassette " + (nextCassetteIndex + 1));
 
         if (cassetteCoroutine != null)
@@ -177,6 +186,35 @@ public class Radio : InteractableObject
         }
 
         cassetteCoroutine = StartCoroutine(WaitForCassetteToEnd(nextCassetteIndex, selectedClip.length, inventory));
+    }
+
+    private void UnlockDoorIfNeeded(int cassetteIndex)
+    {
+        if (!unlockDoorWhenCassetteStarts)
+        {
+            return;
+        }
+
+        if (hasUnlockedDoor)
+        {
+            return;
+        }
+
+        if (cassetteIndex != cassetteIndexThatUnlocksDoor)
+        {
+            return;
+        }
+
+        if (loop1DoorToUnlock == null)
+        {
+            Debug.LogWarning("No hay puerta asignada para destrabar.");
+            return;
+        }
+
+        hasUnlockedDoor = true;
+        loop1DoorToUnlock.UnlockDoor();
+
+        Debug.Log("Puerta del loop 1 destrabada por cassette.");
     }
 
     private IEnumerator WaitForCassetteToEnd(int cassetteIndex, float cassetteLength, PlayerObjectiveInventory inventory)
