@@ -15,6 +15,12 @@ public class CassettePickup : InteractableObject
     public GameObject cassetteVisual;
     public Collider interactionCollider;
 
+    [Header("Events On Pickup")]
+    public GameObject[] objectsToActivateOnPickup;
+    public GameObject[] objectsToDeactivateOnPickup;
+    public AudioSource eventAudioSource;
+    public AudioClip eventSound;
+
     private bool hasBeenPickedUp = false;
 
     private void Start()
@@ -55,6 +61,8 @@ public class CassettePickup : InteractableObject
             Debug.LogWarning("No se encontró PlayerObjectiveInventory en el Player.");
         }
 
+        ActivatePickupEvents();
+
         if (interactionCollider != null)
         {
             interactionCollider.enabled = false;
@@ -73,6 +81,36 @@ public class CassettePickup : InteractableObject
         }
 
         Debug.Log("Agarraste: " + cassetteName);
+    }
+
+    private void ActivatePickupEvents()
+    {
+        if (objectsToActivateOnPickup != null)
+        {
+            foreach (GameObject objectToActivate in objectsToActivateOnPickup)
+            {
+                if (objectToActivate != null)
+                {
+                    objectToActivate.SetActive(true);
+                }
+            }
+        }
+
+        if (objectsToDeactivateOnPickup != null)
+        {
+            foreach (GameObject objectToDeactivate in objectsToDeactivateOnPickup)
+            {
+                if (objectToDeactivate != null)
+                {
+                    objectToDeactivate.SetActive(false);
+                }
+            }
+        }
+
+        if (eventAudioSource != null && eventSound != null)
+        {
+            eventAudioSource.PlayOneShot(eventSound);
+        }
     }
 
     private IEnumerator DestroyAfterSound()
