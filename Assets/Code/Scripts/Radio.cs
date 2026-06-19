@@ -14,11 +14,12 @@ public class Radio : InteractableObject
 
     [Header("Cassette Player")]
     public AudioClip[] cassetteNewsClips;
+    public int cassetteIndexToPlay = 0;
     public bool returnToStaticAfterCassette = true;
     public bool canStopCassetteWithInteraction = false;
 
-    [Header("Loop 1 Door Unlock")]
-    public bool unlockDoorWhenCassetteStarts = true;
+    [Header("Door Unlock")]
+    public bool unlockDoorWhenCassetteStarts = false;
     public int cassetteIndexThatUnlocksDoor = 0;
     public DoorSystem loop1DoorToUnlock;
 
@@ -92,15 +93,15 @@ public class Radio : InteractableObject
             return;
         }
 
-        if (inventory != null && inventory.HasAnyCassette())
+        if (inventory != null && inventory.HasCassette(cassetteIndexToPlay))
         {
-            PlayNextCassette(inventory);
+            PlayCassette(cassetteIndexToPlay, inventory);
             return;
         }
 
         if (interactionDoesNothingWithoutCassette)
         {
-            Debug.Log("La radio solo emite estática.");
+            Debug.Log("La radio solo emite estática. Falta el cassette " + (cassetteIndexToPlay + 1) + ".");
             return;
         }
 
@@ -144,27 +145,19 @@ public class Radio : InteractableObject
         }
     }
 
-    private void PlayNextCassette(PlayerObjectiveInventory inventory)
+    private void PlayCassette(int cassetteIndex, PlayerObjectiveInventory inventory)
     {
-        int nextCassetteIndex = inventory.GetNextUnplayedCassetteIndex();
-
-        if (nextCassetteIndex == -1)
+        if (cassetteNewsClips == null || cassetteIndex >= cassetteNewsClips.Length)
         {
-            Debug.Log("No hay cassettes nuevos para reproducir.");
+            Debug.LogWarning("No hay AudioClip asignado para el cassette " + cassetteIndex);
             return;
         }
 
-        if (cassetteNewsClips == null || nextCassetteIndex >= cassetteNewsClips.Length)
-        {
-            Debug.LogWarning("No hay AudioClip asignado para el cassette " + nextCassetteIndex);
-            return;
-        }
-
-        AudioClip selectedClip = cassetteNewsClips[nextCassetteIndex];
+        AudioClip selectedClip = cassetteNewsClips[cassetteIndex];
 
         if (selectedClip == null)
         {
-            Debug.LogWarning("El clip del cassette " + nextCassetteIndex + " está vacío.");
+            Debug.LogWarning("El clip del cassette " + cassetteIndex + " está vacío.");
             return;
         }
 
@@ -176,16 +169,16 @@ public class Radio : InteractableObject
         radioAudioSource.loop = false;
         radioAudioSource.Play();
 
-        UnlockDoorIfNeeded(nextCassetteIndex);
+        UnlockDoorIfNeeded(cassetteIndex);
 
-        Debug.Log("Reproduciendo cassette " + (nextCassetteIndex + 1));
+        Debug.Log("Reproduciendo cassette " + (cassetteIndex + 1));
 
         if (cassetteCoroutine != null)
         {
             StopCoroutine(cassetteCoroutine);
         }
 
-        cassetteCoroutine = StartCoroutine(WaitForCassetteToEnd(nextCassetteIndex, selectedClip.length, inventory));
+        cassetteCoroutine = StartCoroutine(WaitForCassetteToEnd(cassetteIndex, selectedClip.length, inventory));
     }
 
     private void UnlockDoorIfNeeded(int cassetteIndex)
@@ -214,7 +207,7 @@ public class Radio : InteractableObject
         hasUnlockedDoor = true;
         loop1DoorToUnlock.UnlockDoor();
 
-        Debug.Log("Puerta del loop 1 destrabada por cassette.");
+        Debug.Log("Puerta destrabada por cassette.");
     }
 
     private IEnumerator WaitForCassetteToEnd(int cassetteIndex, float cassetteLength, PlayerObjectiveInventory inventory)
