@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class DoorSystem : MonoBehaviour
 {
@@ -18,7 +20,15 @@ public class DoorSystem : MonoBehaviour
     [SerializeField] AudioClip lockedDoor;
     [SerializeField] AudioClip unlockDoor;
 
+    [Header("UI")]
+    [SerializeField] TextMeshProUGUI doorMessageText;
+    [SerializeField] string lockedMessage = "La puerta está trabada.";
+    [SerializeField] string unlockedMessage = "La puerta se destrabó.";
+    [SerializeField] float messageDuration = 2f;
+    [SerializeField] bool showUnlockedMessage = true;
+
     private bool isLocked;
+    private Coroutine messageCoroutine;
 
     private void Awake()
     {
@@ -28,6 +38,8 @@ public class DoorSystem : MonoBehaviour
         {
             audioSource = GetComponent<AudioSource>();
         }
+
+        ClearMessage();
     }
 
     public void ChangeDoorState()
@@ -35,6 +47,8 @@ public class DoorSystem : MonoBehaviour
         if (isLocked)
         {
             PlaySound(lockedDoor);
+            ShowMessage(lockedMessage);
+
             Debug.Log("La puerta está trabada.");
             return;
         }
@@ -63,6 +77,11 @@ public class DoorSystem : MonoBehaviour
         isLocked = false;
 
         PlaySound(unlockDoor);
+
+        if (showUnlockedMessage)
+        {
+            ShowMessage(unlockedMessage);
+        }
 
         Debug.Log("Puerta destrabada.");
     }
@@ -103,6 +122,38 @@ public class DoorSystem : MonoBehaviour
         else
         {
             AudioSource.PlayClipAtPoint(clip, transform.position, 1f);
+        }
+    }
+
+    private void ShowMessage(string message)
+    {
+        if (doorMessageText == null)
+        {
+            return;
+        }
+
+        if (messageCoroutine != null)
+        {
+            StopCoroutine(messageCoroutine);
+        }
+
+        messageCoroutine = StartCoroutine(ShowMessageRoutine(message));
+    }
+
+    private IEnumerator ShowMessageRoutine(string message)
+    {
+        doorMessageText.text = message;
+
+        yield return new WaitForSeconds(messageDuration);
+
+        ClearMessage();
+    }
+
+    private void ClearMessage()
+    {
+        if (doorMessageText != null)
+        {
+            doorMessageText.text = "";
         }
     }
 }
