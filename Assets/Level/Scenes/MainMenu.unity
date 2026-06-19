@@ -653,7 +653,8 @@ Transform:
   m_LocalPosition: {x: 5.1, y: 1, z: 5.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1059869308}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -112.88, z: 0}
 --- !u!114 &907123749
@@ -847,6 +848,135 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b94abb6c401d5bb4b99164b9937637b5, type: 3}
   m_PrefabInstance: {fileID: 564939256641467459}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1059869307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1059869308}
+  - component: {fileID: 1059869309}
+  m_Layer: 0
+  m_Name: Musica
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1059869308
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059869307}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 907123748}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1059869309
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059869307}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -214160100456740641, guid: 3594e25a16cf2a84a89bebf0f1a75f28, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 1999db22b2ebeec45b69e175f221db0f, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1070485228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dc24c102ba8f6c34ba33de1cf4ca2c49, type: 3}
@@ -3654,6 +3784,10 @@ MonoBehaviour:
   pickupSound: {fileID: 0}
   cassetteVisual: {fileID: 0}
   interactionCollider: {fileID: 0}
+  objectsToActivateOnPickup: []
+  objectsToDeactivateOnPickup: []
+  eventAudioSource: {fileID: 0}
+  eventSound: {fileID: 0}
 --- !u!4 &6449347780945051973
 Transform:
   m_ObjectHideFlags: 0
@@ -4221,6 +4355,10 @@ MonoBehaviour:
   pickupSound: {fileID: 0}
   cassetteVisual: {fileID: 0}
   interactionCollider: {fileID: 0}
+  objectsToActivateOnPickup: []
+  objectsToDeactivateOnPickup: []
+  eventAudioSource: {fileID: 0}
+  eventSound: {fileID: 0}
 --- !u!1001 &7490283747800258486
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4974,6 +5112,11 @@ MonoBehaviour:
   closeDoor: {fileID: 0}
   lockedDoor: {fileID: 8300000, guid: eaf8dc7dcb63fe04e8153514935b0f72, type: 3}
   unlockDoor: {fileID: 8300000, guid: 7a31ee9d7d9b2b94a9e36993994b55ae, type: 3}
+  doorMessageText: {fileID: 0}
+  lockedMessage: "La puerta est\xE1 trabada."
+  unlockedMessage: "La puerta se destrab\xF3."
+  messageDuration: 2
+  showUnlockedMessage: 1
 --- !u!65 &8811529999228913409
 BoxCollider:
   m_ObjectHideFlags: 0
