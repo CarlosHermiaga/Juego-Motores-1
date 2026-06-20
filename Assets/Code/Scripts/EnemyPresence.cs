@@ -1,36 +1,102 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyPresence : MonoBehaviour
 {
-    [Header("Look At Player")]
+    [Header("Player")]
     public Transform player;
+
+    [Header("Look At Player")]
     public bool lookAtPlayer = true;
     public bool rotateOnlyOnY = true;
     public float rotationSpeed = 5f;
     public float rotationOffsetY = 0f;
 
+    [Header("Chase")]
+    public bool canChase = true;
+    public float chaseStartDistance = 6f;
+    public float chaseStopDistance = 12f;
+    public float minDistanceToPlayer = 1.4f;
+
+    [Header("Safe Room")]
+    public SafeRoomZone safeRoomZone;
+    public bool stopChaseWhenPlayerIsSafe = true;
+
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip appearSound;
+    public AudioClip chaseStartSound;
     public float appearVolume = 1f;
+    public float chaseStartVolume = 1f;
+
+    private NavMeshAgent agent;
+    private bool isChasing = false;
+    private bool playedChaseSound = false;
+
+    private void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        if (agent != null)
+        {
+            agent.isStopped = true;
+            agent.updateRotation = false;
+        }
+    }
 
     private void OnEnable()
     {
         FindPlayerIfNeeded();
         PlayAppearSound();
+
+        isChasing = false;
+        playedChaseSound = false;
+
+        if (agent != null)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+        }
     }
 
     private void Update()
     {
-        if (!lookAtPlayer)
+        FindPlayerIfNeeded();
+
+        if (player == null)
         {
             return;
         }
 
-        if (player == null)
+        if (stopChaseWhenPlayerIsSafe && safeRoomZone != null && safeRoomZone.PlayerIsInside)
         {
-            FindPlayerIfNeeded();
+            StopChase();
+            LookAtPlayer();
             return;
+        }
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (canChase && !isChasing && distanceToPlayer <= chaseStartDistance)
+        {
+            StartChase();
+        }
+
+        if (isChasing)
+        {
+            if (distanceToPlayer >= chaseStopDistance)
+            {
+                StopChase();
+            }
+            else
+            {
+                ChasePlayer(distanceToPlayer);
+            }
         }
 
         LookAtPlayer();
@@ -48,17 +114,75 @@ public class EnemyPresence : MonoBehaviour
         if (playerObject != null)
         {
             player = playerObject.transform;
-            return;
         }
-
-        if (Camera.main != null)
+        else if (Camera.main != null)
         {
             player = Camera.main.transform;
         }
     }
 
+    private void StartChase()
+    {
+        isChasing = true;
+
+        if (agent != null)
+        {
+            agent.isStopped = false;
+        }
+
+        if (!playedChaseSound && audioSource != null && chaseStartSound != null)
+        {
+            audioSource.PlayOneShot(chaseStartSound, chaseStartVolume);
+            playedChaseSound = true;
+        }
+
+        Debug.Log("El enemigo empezó a seguir al jugador.");
+    }
+
+    private void StopChase()
+    {
+        if (!isChasing)
+        {
+            return;
+        }
+
+        isChasing = false;
+
+        if (agent != null)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+        }
+
+        Debug.Log("El enemigo dejó de perseguir.");
+    }
+
+    private void ChasePlayer(float distanceToPlayer)
+    {
+        if (distanceToPlayer <= minDistanceToPlayer)
+        {
+            if (agent != null)
+            {
+                agent.isStopped = true;
+            }
+
+            return;
+        }
+
+        if (agent != null)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(player.position);
+        }
+    }
+
     private void LookAtPlayer()
     {
+        if (!lookAtPlayer || player == null)
+        {
+            return;
+        }
+
         Vector3 direction = player.position - transform.position;
 
         if (rotateOnlyOnY)
@@ -83,11 +207,6 @@ public class EnemyPresence : MonoBehaviour
 
     private void PlayAppearSound()
     {
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
-
         if (audioSource != null && appearSound != null)
         {
             audioSource.PlayOneShot(appearSound, appearVolume);
