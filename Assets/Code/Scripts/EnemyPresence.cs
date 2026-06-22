@@ -1,3 +1,4 @@
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -32,6 +33,8 @@ public class EnemyPresence : MonoBehaviour
     private NavMeshAgent agent;
     private bool isChasing = false;
     private bool playedChaseSound = false;
+
+    [SerializeField] Animator animator;
 
     private void Awake()
     {
@@ -124,6 +127,7 @@ public class EnemyPresence : MonoBehaviour
     private void StartChase()
     {
         isChasing = true;
+        animator.SetBool("Chasing", true);
 
         if (agent != null)
         {
@@ -147,6 +151,7 @@ public class EnemyPresence : MonoBehaviour
         }
 
         isChasing = false;
+        animator.SetBool("Chasing", false);
 
         if (agent != null)
         {
