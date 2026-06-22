@@ -5,7 +5,7 @@ using TMPro;
 public class DoorSystem : MonoBehaviour
 {
     [Header("Door State")]
-    [SerializeField] bool doorOpen = false;
+    public bool doorOpen = false;
     [SerializeField] bool startsLocked = false;
 
     [Header("Door Rotation")]
@@ -27,7 +27,7 @@ public class DoorSystem : MonoBehaviour
     [SerializeField] float messageDuration = 2f;
     [SerializeField] bool showUnlockedMessage = true;
 
-    private bool isLocked;
+    public bool isLocked;
     private Coroutine messageCoroutine;
 
     private void Awake()
